@@ -1,13 +1,66 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import qs from 'qs'
-import './style.less';
-console.log(qs.parse('name=wzr&age=10'));
+import React , { Component } from 'react';
+import ReactDom from 'react-dom'
+import Add from './components/Add'
+import 'bootstrap/dist/css/bootstrap.css'
+import { Provider } from 'react-redux'
+import configureStore from './store/configureStore'
+
+/*
+const logger=store=>next=>action=>{
+    console.log('dispatching',action);
+    let result=next(action);
+    console.log('next state',store.getState());
+    return result;
+}
+const error=store=>next=>action=>{
+    try {
+        next(action)
+    }
+    catch (e) {
+        console.log(e);
+    }
+}
+
+*/
+
+const store = configureStore();
 
 
-ReactDOM.render(<div>xxxxxxxxx</div>, document.getElementById('root'));
+class Index extends React.Component {
+    constructor(props) {
+        super(props);
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
+        this.state = {};
+
+    }
+
+    render() {
+        // console.dir(this.props);
+        return (
+            <div>
+                <Add/>
+            </div>
+        );
+    }
+}
+
+Index.propTypes = {};
+
+const renders = () => {
+    ReactDom.render(<Provider store={store}>
+        <div>
+            <Index/>
+        </div>
+    </Provider> , document.getElementById('root'));
+
+}
+renders();
+if (module.hot) {
+    module.hot.accept('./index' , () => {
+        renders();
+    })
+
+}
+
+// store.subscribe(renders);
 
